@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<ui:include src="Head.xhtml"></ui:include>
+</h:head>
+<h:body>
+	<ui:include src="MenuBar.xhtml"></ui:include>
+	<h:form id="form">
+		<table>
+			<tr valign="top">
+				<td>
+					<p:panel id="filter" header="Filtros" style="margin-bottom:10px;">
+						<h:panelGrid columns="2">
+							<h:outputLabel for="filterNombre" value="Nombre: " />
+							<p:inputText id="filterNombre" value="#{cursoMB.filterNombre}"/>
+							
+							<p:commandButton value="Filtrar" update="cursos" action="#{cursoMB.refreshGrid}" />
+						</h:panelGrid>
+					</p:panel>
+					<p:panel id="panelCurso" header="Cursos" style="margin-bottom:10px;">
+						<p:contextMenu for="cursos" >
+						    <p:menuitem value="Editar" update="panel" icon="ui-icon-pencil" actionListener="#{cursoMB.editarCurso}"/>
+						    <p:menuitem value="Borrar" update="cursos" icon="ui-icon-trash" actionListener="#{cursoMB.borrarCurso}"/>
+						</p:contextMenu>
+						<p:dataTable id="cursos" var="curso" value="#{cursoMB.cursos}" rowKey="#{curso.id}" selection="#{cursoMB.selectedCurso}" selectionMode="single">
+					        <f:facet name="header">
+					            Realice click derecho para mostrar las opciones.
+					        </f:facet>
+					        <p:ajax event="rowSelect" listener="#{cursoMB.onRowSelect}" update=":form:cursosMaterias" />
+					        <p:column headerText="Nombre">
+					            <h:outputText value="#{curso.nombre}" />
+					        </p:column>
+					        <p:column headerText="Descripcion">
+					            <h:outputText value="#{curso.descripcion}" />
+					        </p:column>
+					    </p:dataTable>
+					</p:panel>
+				    <br />
+				    <br />
+				    <p:panel id="panelMaterias" header="Materias" style="margin-bottom:10px;">
+					    <p:dataTable id="cursosMaterias" var="cursoMateria" value="#{cursoMB.cursosMaterias}" >
+					        <p:column headerText="Nombre">
+					            <h:outputText value="#{cursoMateria.materia.nombre}" />
+					        </p:column>
+					        <p:column headerText="Descripcion">
+					            <h:outputText value="#{cursoMateria.materia.descripcion}" />
+					        </p:column>
+					        <p:column style="width:32px;text-align: center">
+					            <p:commandButton update=":form:cursosMaterias" action="#{cursoMB.borrarCM}" icon="ui-icon-trash" title="View">
+					                <f:setPropertyActionListener value="#{cursoMateria}" target="#{cursoMB.selectedCursoMateria}" />
+					            </p:commandButton>
+       						</p:column>
+					    </p:dataTable> 
+					    
+					</p:panel>
+				</td>
+				<td>
+					<p:panel id="panel" header="Curso" style="margin-bottom:10px;">
+		
+						<p:messages id="msgs" display="tooltip" />
+						
+						<h:panelGrid columns="2">
+							<h:outputLabel for="cursoId" value="" />
+							<h:inputHidden id="cursoId" value="#{cursoMB.id}" />
+							
+							<h:outputLabel for="inputName" value="Nombre: " />
+							<p:inputText id="inputName" value="#{cursoMB.nombre}" label="Nombre">
+								<f:validateRequired />
+							</p:inputText>
+							
+							<h:outputLabel for="inputDesc" value="Descripcion: " />
+							<p:inputText id="inputDesc" value="#{cursoMB.descripcion}" label="Descripcion" />
+			                
+					        <p:commandButton value="Guardar" update="cursos,panel" action="#{cursoMB.save}" />		
+						</h:panelGrid>
+					</p:panel>
+					
+					<p:panel id="panelMateria" header="Asignar Materia" style="margin-bottom:10px;">
+		
+						<p:messages id="msgsMateria" display="tooltip" />
+						
+						<h:panelGrid columns="2">
+							<p:outputLabel for="materia" value="Materia:" />
+			                <p:selectOneMenu id="materia" value="#{cursoMB.materia}" converter="materiaConverter" panelStyle="width:180px"
+					                         effect="fade" var="t" style="width:160px" filter="true" filterMatchMode="startsWith">
+					            <f:selectItems value="#{cursoMB.materias}" var="MateriaDTO" itemLabel="#{materia.nombre}" itemValue="#{materia.id}" />
+					 
+					            <p:column>
+					                <h:outputText value="#{t.nombre}" />
+					            </p:column>
+					        </p:selectOneMenu>
+			                
+					        <p:commandButton value="Guardar" update="panelMateria" action="#{cursoMB.saveCursoMateria}" />	
+					        																	
+						</h:panelGrid>
+					</p:panel>
+				</td>
+			</tr>
+		</table>		
+	</h:form>
+</h:body>
+</html>

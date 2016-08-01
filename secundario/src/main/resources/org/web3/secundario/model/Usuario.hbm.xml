@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping package="org.web3.secundario.model">
+	<class name="UsuarioDTO" table="USUARIOS">
+		<id column="id" name="id" type="java.lang.String" >
+			<generator class="org.hibernate.id.UUIDGenerator"/>
+		</id>
+		
+		<property name="usuario" 	column="usuario" 	type="java.lang.String"/>
+		<property name="password"	column="password"	type="java.lang.String"/>
+		<property name="nomCompleto"	column="nombre_completo"	type="java.lang.String"/>
+	</class>
+	
+	<query name="getAllUsuarios">
+		<![CDATA[
+			SELECT u FROM UsuarioDTO u
+		]]>
+	</query>
+	
+	<query name="getUsuarioByLogin">
+		<![CDATA[
+			SELECT u FROM UsuarioDTO u WHERE u.usuario=:login
+		]]>
+	</query>
+	
+</hibernate-mapping>

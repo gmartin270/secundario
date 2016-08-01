@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<link type="text/css" rel="stylesheet" href="themes/ui-lightness/skin.css" />
+	</h:head>
+	<h:body>
+		<center>
+			<h:form style="width:30%">
+				<p:panel id="panel" header="Sistema Académico - Inicio de Sesión" style="margin-bottom:10px;">
+					<p:growl id="msg" showDetail="true" sticky="true" />
+					<h:panelGrid columns="2">
+					
+						<h:outputLabel for="inputLogin" value="Usuario: " />
+						<p:inputText id="inputLogin" value="#{loginMB.usuario}" required="true" label="Usuario"/>
+						
+						<h:outputLabel for="inputPassword" value="Password: " />
+						<p:password id="inputPassword" value="#{loginMB.password}" feedback="true" required="true" label="Password"/>
+						
+						<p:commandButton value="Log In" action="#{loginMB.login}" validateClient="true" update="msg" />					
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+			
+		</center>
+		
+	</h:body>
+</html>

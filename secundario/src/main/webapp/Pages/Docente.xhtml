@@ -1,0 +1,89 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<ui:include src="Head.xhtml"></ui:include>
+</h:head>
+<h:body>
+	<ui:include src="MenuBar.xhtml"></ui:include>
+	<h:form>
+		<table>
+			<tr valign="top">
+				<td>
+					<p:panel id="filter" header="Filtros" style="margin-bottom:10px;">
+						<h:panelGrid columns="2">
+							<h:outputLabel for="filterDNI" value="Nro. DNI: " />
+							<p:inputText id="filterDNI" value="#{docenteMB.filterDNI}"/>
+							
+							<h:outputLabel for="filterApellido" value="Apellido: " />
+							<p:inputText id="filterApellido" value="#{docenteMB.filterApellido}"/>
+							
+							<p:commandButton value="Filtrar" update="docentes" action="#{docenteMB.refreshGrid}" />
+						</h:panelGrid>
+					</p:panel>
+					<p:contextMenu for="docentes">
+					    <p:menuitem value="Editar" update="panel" icon="ui-icon-pencil" actionListener="#{docenteMB.editarDocente}"/>
+					    <p:menuitem value="Borrar" update="docentes" icon="ui-icon-trash" actionListener="#{docenteMB.borrarDocente}"/>
+					</p:contextMenu>
+					<p:dataTable id="docentes" var="docente" value="#{docenteMB.docentes}" rowKey="#{docente.id}" selection="#{docenteMB.selectedDocente}" selectionMode="single">
+				        <f:facet name="header">
+				            Docentes - Realice click derecho para mostrar las opciones.
+				        </f:facet>
+				        <p:column headerText="Nombre">
+				            <h:outputText value="#{docente.nombres}" />
+				        </p:column>
+				        <p:column headerText="Apellido">
+				            <h:outputText value="#{docente.apellido}" />
+				        </p:column>
+				        <p:column headerText="Tipo Doc." >
+				            <h:outputText value="#{docente.tipo.descripcion}" />
+				        </p:column>
+				        <p:column headerText="Nro. Doc." >
+				            <h:outputText value="#{docente.nroDocumento}" />
+				        </p:column>
+				    </p:dataTable> 
+				</td>
+				<td>
+					<p:panel id="panel" header="Docente" style="margin-bottom:10px;">
+		
+						<p:messages id="msgs" display="tooltip" />
+						
+						<h:panelGrid columns="2">
+							<h:outputLabel for="docenteId" value="" />
+							<h:inputHidden id="docenteId" value="#{docenteMB.id}" />
+							
+							<h:outputLabel for="inputname" value="Nombres: " />
+							<p:inputText id="inputname" value="#{docenteMB.name}" label="Nombres" >
+								<f:validateRequired />
+							</p:inputText>
+							
+							<h:outputLabel for="inputlastName" value="Apellidos: " />
+							<p:inputText id="inputlastName" value="#{docenteMB.lastName}" label="Apellidos" />
+							
+							<p:outputLabel for="tipoDocumento" value="Tipo Documento:" />
+							
+			                <p:selectOneMenu id="tipoDocumento" value="#{docenteMB.tipoDocumento}" converter="tipoDocumentoConverter" panelStyle="width:180px"
+					                         effect="fade" var="t" style="width:160px" filter="true" filterMatchMode="startsWith" >
+					            <f:selectItems value="#{docenteMB.tiposDocumento}" var="tipo" itemLabel="#{tipoDocumento.descripcion}" itemValue="#{tipoDocumento}" />
+
+					            <p:column>
+					                <h:outputText value="#{t.descripcion}" />
+					            </p:column>
+					        </p:selectOneMenu>
+			                
+							<h:outputLabel for="inputDni" value="Número Documento: " />
+			                <p:inputText id="inputDni" value="#{docenteMB.dni}" label="Número Documento" />
+			                
+					        <p:commandButton value="Guardar" update="docentes,panel" action="#{docenteMB.save}" />	
+					        																	
+						</h:panelGrid>
+					</p:panel>
+				</td>
+			</tr>
+		</table>		
+	</h:form>
+</h:body>
+</html>

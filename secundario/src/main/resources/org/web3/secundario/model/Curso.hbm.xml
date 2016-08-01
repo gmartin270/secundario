@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping package="org.web3.secundario.model">
+	<class name="CursoDTO" table="CURSOS">
+		<id column="id" name="id" type="java.lang.String" >
+			<generator class="org.hibernate.id.UUIDGenerator"/>
+		</id>
+		<property name="nombre" column="nombre" type="java.lang.String"/>
+		<property name="descripcion" column="descripcion" type="java.lang.String"/>
+		
+		
+	</class>
+	
+	<query name="getAllCursos">
+		<![CDATA[
+			SELECT t FROM CursoDTO t ORDER BY t.nombre
+		]]>
+	</query>
+	
+	
+</hibernate-mapping>

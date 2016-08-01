@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:growl id="messages" />
+		<p:menubar>
+			<p:menuitem value="Principal" url="Home.xhtml" style="height: auto;" icon="ui-icon-home"/>
+			<p:submenu label="Operar" icon="ui-icon-document">
+				<p:menuitem value="Alumnos" url="/Pages/Alumno.xhtml" style="height: auto;" />
+				<p:menuitem value="Docentes" url="/Pages/Docente.xhtml" style="height: auto;" />
+				<p:menuitem value="Cursos" url="/Pages/Curso.xhtml" style="height: auto;" />
+				<p:menuitem value="Materias" url="/Pages/Materia.xhtml" style="height: auto;" />
+			</p:submenu>
+			<p:submenu label="Herramientas" icon="ui-icon-document">
+				<p:menuitem value="Adm. Usuarios" url="#" style="height: auto;" />
+			</p:submenu>
+			<f:facet name="options">
+				<p:button value="Logout" icon="ui-icon-power" outcome="Login.xhtml" />
+			</f:facet>
+		</p:menubar>
+	</h:form>
+</ui:composition>

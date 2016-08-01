@@ -1,0 +1,99 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<ui:include src="Head.xhtml"></ui:include>
+</h:head>
+<h:body>
+	<ui:include src="MenuBar.xhtml"></ui:include>
+	<h:form>
+		<table>
+			<tr valign="top">
+				<td>
+					<p:panel id="filter" header="Filtros" style="margin-bottom:10px;">
+						<h:panelGrid columns="2">
+							<h:outputLabel for="filterDNI" value="Nro. DNI: " />
+							<p:inputText id="filterDNI" value="#{alumnoMB.filterDNI}"/>
+							
+							<h:outputLabel for="filterApellido" value="Apellido: " />
+							<p:inputText id="filterApellido" value="#{alumnoMB.filterApellido}"/>
+							
+							<p:commandButton value="Filtrar" update="alumnos" action="#{alumnoMB.refreshGrid}" />
+						</h:panelGrid>
+					</p:panel>
+					<p:contextMenu for="alumnos">
+					    <p:menuitem value="Editar" update="panel" icon="ui-icon-pencil" actionListener="#{alumnoMB.editarAlumno}"/>
+					    <p:menuitem value="Borrar" update="alumnos" icon="ui-icon-trash" actionListener="#{alumnoMB.borrarAlumno}"/>
+					</p:contextMenu>
+					<p:dataTable id="alumnos" var="alumno" value="#{alumnoMB.alumnos}" rowKey="#{alumno.id}" selection="#{alumnoMB.selectedAlumno}" selectionMode="single">
+				        <f:facet name="header">
+				            Alumnos - Realice click derecho para mostrar las opciones.
+				        </f:facet>
+				        <p:column headerText="Nombre">
+				            <h:outputText value="#{alumno.nombres}" />
+				        </p:column>
+				        <p:column headerText="Apellido">
+				            <h:outputText value="#{alumno.apellido}" />
+				        </p:column>
+				        <p:column headerText="Tipo Doc." >
+				            <h:outputText value="#{alumno.tipo.descripcion}" />
+				        </p:column>
+				        <p:column headerText="Nro. Doc." >
+				            <h:outputText value="#{alumno.nroDocumento}" />
+				        </p:column>
+				    </p:dataTable> 
+				</td>
+				<td>
+					<p:panel id="panel" header="Alumno" style="margin-bottom:10px;">
+		
+						<p:messages id="msgs" display="tooltip" />
+						
+						<h:panelGrid columns="2">
+							<h:outputLabel for="alumnoId" value="" />
+							<h:inputHidden id="alumnoId" value="#{alumnoMB.id}" />
+							
+							<h:outputLabel for="inputname" value="Nombres: " />
+							<p:inputText id="inputname" value="#{alumnoMB.name}" label="Nombres" >
+								<f:validateRequired />
+							</p:inputText>
+							
+							<h:outputLabel for="inputlastName" value="Apellidos: " />
+							<p:inputText id="inputlastName" value="#{alumnoMB.lastName}" label="Apellidos"  />
+							
+							<p:outputLabel for="tipoDocumento" value="Tipo Documento:" />
+							
+			                <p:selectOneMenu id="tipoDocumento" value="#{alumnoMB.tipoDocumento}" converter="tipoDocumentoConverter" panelStyle="width:180px"
+					                         effect="fade" var="t" style="width:160px" filter="true" filterMatchMode="startsWith" >
+					            <f:selectItems value="#{alumnoMB.tiposDocumento}" var="tipo" itemLabel="#{tipoDocumento.descripcion}" itemValue="#{tipoDocumento}" />
+
+					            <p:column>
+					                <h:outputText value="#{t.descripcion}" />
+					            </p:column>
+					        </p:selectOneMenu>
+			                
+							<h:outputLabel for="inputDni" value="Número Documento: " />
+			                <p:inputText id="inputDni" value="#{alumnoMB.dni}" label="Número Documento" />
+			                
+			                <p:outputLabel for="nacionalidad" value="Nacionalidad:" />
+			                <p:selectOneMenu id="nacionalidad" value="#{alumnoMB.nacionalidad}" converter="paisConverter" panelStyle="width:180px"
+					                         effect="fade" var="t" style="width:160px" filter="true" filterMatchMode="startsWith">
+					            <f:selectItems value="#{alumnoMB.nacionalidades}" var="PaisDTO" itemLabel="#{pais.nombre}" itemValue="#{pais.id}" />
+					 
+					            <p:column>
+					                <h:outputText value="#{t.nombre}" />
+					            </p:column>
+					        </p:selectOneMenu>
+					        
+					        <p:commandButton value="Guardar" update="alumnos,panel" action="#{alumnoMB.save}" />	
+					        																	
+						</h:panelGrid>
+					</p:panel>
+				</td>
+			</tr>
+		</table>		
+	</h:form>
+</h:body>
+</html>
